@@ -1,0 +1,56 @@
+syntax = "proto3";
+package proto;
+message Account{
+  string username=1;
+  string password=2;
+  string alias=3;
+  string avatar=4;
+  int32 rankPoint=5;
+  enum Status{
+    success=0;
+    failed=1;
+    username_in_Used=2;
+    alias_in_used=3;
+  }
+  Status status=6;
+  string original_username=7;
+  string original_password=8;
+  string original_alias=9;
+}
+message Message{
+  string alias=1;
+  string message=2;
+}
+
+message Information {
+  oneof type{
+    int32 connect = 1;
+    int32 disconnect = 2;
+    int32 keepAlive = 3;
+    Account signup = 4;
+    Account login = 5;
+    Account alter = 6;
+    int32 game9 = 7;
+    int32 game1v1 = 8;
+    int32 game_single = 9;
+    Message message = 10;
+    Account points = 11;
+    int32 error =12;
+
+  }
+}
+message Instruction{
+  oneof type{
+    int32 clockwise = 1;
+    int32 counterclockwise = 2;
+    int32 down = 3;
+    int32 right = 4;
+    int32 left = 5;
+    int32 drop = 6;
+    int32 swap_block = 7;
+    int32 stack_clear = 8;
+    int32 random_seed = 9;
+    int32 ready_to_start = 10;
+    int32 game_over = 11;
+  }
+}

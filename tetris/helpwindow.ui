@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HelpWindow</class>
+ <widget class="QWidget" name="HelpWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>668</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>游戏帮助</string>
+  </property>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>90</y>
+     <width>501</width>
+     <height>361</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>微软雅黑</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;按← →或者J L使方块左右移动&lt;/p&gt;&lt;p&gt;按↑或D顺时针键旋转方块&lt;/p&lt;p&gt;按A逆时针旋转方块&lt;/p&gt;&lt;p&gt;按↓或者K使方块加速向下移动&lt;/p&gt;按空格键使方块直接移动到底端&lt;/p&gt;&lt;p&gt;按S将替换当前方块和HOLD槽方块交换&lt;/p&gt;
+&lt;p&gt;一次性消除一行造成一点伤害&lt;/p&gt;
+&lt;p&gt;2行3点，3行5点，4行7点&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
