@@ -1,4 +1,3 @@
-cmake_minimum_required(VERSION 3.11)
 project(kcp)
 
 file(GLOB_RECURSE KCP_SRCS *.c)

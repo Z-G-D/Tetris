@@ -1,4 +1,3 @@
-cmake_minimum_required(VERSION 3.11)
 project(protobuf)
 
 find_package(Protobuf REQUIRED 3.15.6)

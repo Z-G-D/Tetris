@@ -6,20 +6,19 @@
 #include <QsLog.h>
 #include <QtCore/QCoreApplication>
 #include "global.h"
-
 QUdpSocket *Server::serverSocket;
 
 Server::Server(QObject *parent) : QObject(parent), simpleCrypt(global::privateKey)
 {
-    db = QSqlDatabase::addDatabase("QSQLITE");
+    db = QSqlDatabase::addDatabase("QSQLITE","SQLITE");
     db.setDatabaseName(QCoreApplication::applicationDirPath() + "/tetris.db");
     if (!db.open())
     {
         QLOG_FATAL() << "数据库连接失败" << QCoreApplication::applicationDirPath();
+        throw std::runtime_error("数据库连接失败");
     }
     QSqlQuery query(db);
-    query.exec(
-            "CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, alias TEXT NOT NULL UNIQUE,rankpoint INTEGER DEFAULT (0), avatar TEXT)");
+    query.exec("CREATE TABLE IF NOT EXISTS account(id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, alias TEXT NOT NULL UNIQUE,rankpoint INTEGER DEFAULT (0), avatar TEXT)");
 
     serverSocket = new QUdpSocket(this);
     if (serverSocket->bind(global::serverPort))
@@ -28,7 +27,6 @@ Server::Server(QObject *parent) : QObject(parent), simpleCrypt(global::privateKe
     }
     else
     {
-        //perror("Bind error");
         QLOG_FATAL() << "端口绑定失败 port = " << global::serverPort;
         throw std::runtime_error("Bind port error");
     }
