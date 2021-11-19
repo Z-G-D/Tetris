@@ -168,7 +168,7 @@ void GameWindow::paintEvent(QPaintEvent *event)
                     proto::Instruction instruction;
                     instruction.set_game_over(0);
                     ikcp_send(game.getKcpClient(), instruction.SerializeAsString().data(), instruction.ByteSizeLong());
-                    points = game.getPlayers()[game.getPlayerNumber()].getDamageCounter();
+                    points = game.getCurrentPlayer().getDamageCounter();
                 }
                 f = false;
                 QColor color(0, 0, 0, 100);
@@ -299,11 +299,7 @@ void GameWindow::paintEvent(QPaintEvent *event)
         }
     }
 
-    int alive = 0;
-    for (auto &i:game.getPlayers())
-    {
-        if (!i.isGamOver())alive++;
-    }
+    int alive = game.getPlayerAliveCount();
     if (gameType == GameType::gameSingle)
     {
         if (alive == 0)
@@ -354,7 +350,7 @@ void GameWindow::keyPressEvent(QKeyEvent *event)
         close();
         return;
     }
-    if (!global::isGameStart || game.getPlayers()[game.getPlayerNumber()].isGamOver())
+    if (!global::isGameStart || game.getCurrentPlayer().isGamOver())
         return;
     proto::Instruction instruction;
     switch (event->key())
@@ -397,7 +393,7 @@ void GameWindow::closeEvent(QCloseEvent *event)
     proto::Instruction instruction;
     instruction.set_game_over(0);
     ikcp_send(game.getKcpClient(), instruction.SerializeAsString().data(), instruction.ByteSizeLong());
-    points = game.getPlayers()[game.getPlayerNumber()].getDamageCounter();
+    points = game.getCurrentPlayer().getDamageCounter();
     ikcp_flush(game.getKcpClient());
     emit closeGame();
     global::mainWindow->show();

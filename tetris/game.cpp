@@ -178,28 +178,14 @@ const QPoint Player::wallKickDataOfI[4/*四个初始方向*/][2/*两个旋转方
 Player::Player(qint32 seed) : isGameOver(false), holdBlockType(-1), stackCounter(0), damageCounter(0)
 {
     randomGenerator.seed(seed);
+    // 初始化游戏地图
     gameMap.resize(global::gameHeight + global::externLine);
     for (auto &line :gameMap)
     {
         line.resize(global::gameWidth);
     }
 
-    if (bagOf7.size() < 7)
-    {
-        qint32 bag[7]{0, 1, 2, 3, 4, 5, 6};
-        for (int i = 0; i < 6; i++)
-        {
-            std::swap(bag[i], bag[randomGenerator.bounded(i, 6)]);
-        }
-        for (int i = 0; i < 7; i++)
-        {
-            bagOf7.push_back(bag[i]);
-        }
-    }
-    position = global::homePosition;
-    blockDirection = 0;
-    blockType = bagOf7.front();
-    bagOf7.pop_front();
+    getNextBlock();
     holdBlockType = bagOf7.front();
     bagOf7.pop_front();
 }
@@ -300,23 +286,60 @@ bool Player::collisionDetection(QPoint dPoint) const
     return true;
 }
 
-const QVector<QPoint> &Player::getBlock(qint32 i) const
+void Player::getNextBlock()
+{
+    //初始化7bag机制，获得7个方块的随机排序
+    if (bagOf7.size() < 7)
+    {
+        qint32 bag[7]{0, 1, 2, 3, 4, 5, 6};
+        //每次选出7中方块中的一种放在位置i
+        for (int i = 0; i < 6; i++)
+        {
+            std::swap(bag[i], bag[randomGenerator.bounded(i, 6)]);
+        }
+        for (auto i : bag)
+        {
+            bagOf7.push_back(i);
+        }
+    }
+    //将方块的位置回复到初始位置，并初始化block的各种属性
+    position = global::homePosition;
+    blockDirection = 0;
+    blockType = bagOf7.front();
+    bagOf7.pop_front();
+    //当方块碰撞则上移，不造成玩家即死，可以上移至externLine中
+    while (!collisionDetection({0, 0}))
+    {
+        position += {0, -1};
+    }
+}
+
+
+bool Player::isDead()
+{
+    //判断最上面一行是否存在方块
+    for (auto item :gameMap[global::externLine - 1])
+    {
+        if (item.first)
+        {
+            return isGameOver = true;
+        }
+    }
+    return false;
+}
+
+const QVector<QPoint> &Player::getBlock(quint32 i) const
 {
     if (i)
     {
-        return block[bagOf7[i - 1]][0];
+        return block[bagOf7[i - 1]][0];//获取7bag中的第i-1个方块
     }
-    return block[blockType][blockDirection];
+    return block[blockType][blockDirection];//获取当前方块
 }
 
 const QVector<QPoint> &Player::getHoldBlock() const
 {
     return block[holdBlockType][0];
-}
-
-const QQueue<int> &Player::getBagOf7() const
-{
-    return bagOf7;
 }
 
 void Player::left()
@@ -352,6 +375,7 @@ void Player::swapBlock()
     std::swap(blockType, holdBlockType);
     position = global::homePosition;
     blockDirection = 0;
+    //当位置初始化为homePosition仍然碰撞，就将方块上移至externalline中，避免玩家即死
     while (!collisionDetection({0, 0}))
     {
         position += {0, -1};
@@ -362,36 +386,36 @@ void Player::hardDrop()
 {
     if (isGameOver)return;
     auto heightFromBottom = getHeightFromBottom();
+    //将方块锁定在当前位置的正下方
     for (QPoint point:getBlock(0))
     {
         gameMap[position.y() + point.y() + heightFromBottom][position.x() + point.x()] = {true, getColor(0)};
     }
-    int clearLine = 0;
+    int clearLine = 0;//计数本次一共消除的行数
     for (int line = 0; line != gameMap.size(); line++)
     {
-        bool isAllFull = true;
-        for (auto &pair: gameMap[line])
+        bool isAllFull = true;//本行是或否全满
+        for (auto &item: gameMap[line])
         {
-            if (!pair.first)
+            if (!item.first)
             {
                 isAllFull = false;
                 break;
             }
         }
+        //全满则消除
         if (isAllFull)
         {
             clearLine++;
+            //将本行及以上的行往下移动一格
             for (auto i = line; i != 0; i--)
             {
-                for (int j = 0; j < gameMap[i].size(); j++)
-                    gameMap[i][j] = gameMap[i - 1][j];
+                gameMap[i] = gameMap[i - 1];
             }
-            line--;
-            /*gameMap.erase(iter);
-            gameMap.push_front(QVector<QPair<bool, QColor>>(global::gameWidth, {false, QColor()}));
-            iter = gameMap.begin();*/
         }
     }
+    if (isDead())return;
+    //消行伤害计算
     switch (clearLine)
     {
         case 1:
@@ -407,37 +431,7 @@ void Player::hardDrop()
             stackCounter -= 7;
             break;
     }
-
-
-    if (bagOf7.size() < 7)
-    {
-        qint32 bag[7]{0, 1, 2, 3, 4, 5, 6};
-        for (int i = 0; i < 6; i++)
-        {
-            std::swap(bag[i], bag[randomGenerator.bounded(i, 6)]);
-        }
-        for (int &i : bag)
-        {
-            bagOf7.push_back(i);
-        }
-    }
-    for (int i = 0; i < global::gameWidth; i++)
-    {
-        if (gameMap[global::externLine - 1][i].first)
-        {
-            isGameOver = true;
-            return;
-        }
-    }
-    position = global::homePosition;
-    blockDirection = 0;
-    blockType = bagOf7.front();
-    bagOf7.pop_front();
-
-    while (!collisionDetection({0, 0}))
-    {
-        position += {0, -1};
-    }
+    getNextBlock();
 }
 
 
@@ -473,25 +467,23 @@ void Player::stackClear()
 {
     if (isGameOver)return;
     QLOG_INFO() << "stackClear() called stackCounter=" << stackCounter;
-    for (int i = 0; i < (stackCounter + 1) / 2; i++)
+    //每次stackClear清除一半（向上取整）的stackCounter计数
+    int n = (stackCounter + 1) / 2;
+    stackCounter -= n;
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < global::gameWidth; j++)
-        {
-            if (gameMap[j][global::externLine - 1].first)
-            {
-                isGameOver = true;
-                return;
-            }
-        }
+        //判定stackClear是否造成玩家死亡，
+        if (isDead())return;
+        //往下塞一行黑色方块
         gameMap.push_back(QVector<QPair<bool, QColor>>(global::gameWidth, {true, global::stackColor}));
         gameMap.back()[randomGenerator.bounded(0, global::gameWidth - 1)] = {false, global::stackColor};
         gameMap.erase(gameMap.begin());
+        //如果往下塞一行黑色方块造成方块碰撞，则将方块上移，不造成玩家即死
         if (!collisionDetection({0, 0}))
         {
             position += {0, -1};
         }
     }
-    stackCounter = stackCounter / 2;
 }
 
 qint32 Player::getStackCounter() const
@@ -607,7 +599,7 @@ void Game::netSlap()
         int dataSize = ikcp_recv(kcpClient, byteArray.data(), byteArray.size());
         if (dataSize < 0) break;
         proto::Instruction instruction;
-        if(instruction.ParseFromArray(byteArray.data(), dataSize))
+        if (instruction.ParseFromArray(byteArray.data(), dataSize))
         {
             switch (instruction.type_case())
             {
@@ -662,7 +654,7 @@ void Game::netSlap()
                     else//多人模式
                     {
                         qint32 damage = -players[instruction.drop()].getStackCounter();
-                        quint32 aliveCount = GetAlivePlayerCount();
+                        quint32 aliveCount = getPlayerAliveCount();
                         if (damage > 0 && aliveCount > 1 && damage >= aliveCount - 1)
                         {
                             players[instruction.drop()].addDamageCounter(damage);
@@ -749,7 +741,7 @@ void Game::gameOver() const
     stackClearTimer->stop();
 }
 
-quint32 Game::GetAlivePlayerCount()
+quint32 Game::getPlayerAliveCount()
 {
     quint32 aliveSize = 0;
     for (auto &player:players)
@@ -760,5 +752,9 @@ quint32 Game::GetAlivePlayerCount()
     return aliveSize;
 }
 
+Player &Game::getCurrentPlayer()
+{
+    return players[playerNumber];
+}
 
 
