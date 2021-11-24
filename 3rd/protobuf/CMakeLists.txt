@@ -1,7 +1,6 @@
 project(protobuf)
 
 find_package(Protobuf REQUIRED 3.15.6)
-message(${PROTOBUF_LIBRARIES})
 
 #每当修改tetris.proto时重新生成pb文件
 add_custom_command(

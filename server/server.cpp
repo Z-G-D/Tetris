@@ -130,7 +130,7 @@ void Server::netSlap()
                         QLOG_TRACE() << "客户端连接成功";
                         information.set_connect(1);
                         ikcp_send(kcpClient, information.SerializeAsString().data(), information.ByteSizeLong());
-                        aliveCounter = 3;
+                        aliveCounter = 10;
                         break;
                     }
                     case proto::Information::kDisconnect:
@@ -143,8 +143,7 @@ void Server::netSlap()
                     }
                     case proto::Information::kKeepAlive:
                     {
-                        QLOG_TRACE() << "Receive keepAlive ";
-                        if (aliveCounter > 0)aliveCounter = 3;
+                        if (aliveCounter > 0)aliveCounter = 10;
                         break;
                     }
                     case proto::Information::kSignup:
@@ -309,17 +308,6 @@ void Server::netSlap()
                     case proto::Information::kGame9:
                     {
                         QLOG_TRACE() << "Receive kGame9 ";
-                        /*{//单人测试
-                            game9q.push_back(kcpClient);
-                            Game *game = new Game(9);
-                            information.set_game9(game->getGamePort());
-
-                            ikcp_send(game9q.front(), information.SerializeAsString().data(),
-                                      information.ByteSizeLong());
-                            game9q.pop_front();
-
-                            games.push_back(game);
-                        }*/
                         game9q.push_back(kcpClient);
                         if (game9q.size() >= 9)
                         {

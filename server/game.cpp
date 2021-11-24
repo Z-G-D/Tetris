@@ -71,21 +71,6 @@ void Game::netSlap()
                         break;
                     case proto::Instruction::kReadyToStart:
                         players.push_back(kcpClient);
-                        /*if(gameSize==9)//9人测试版
-                        {
-                            quint32 randArray[10];
-                            QRandomGenerator::global()->fillRange(randArray, gameSize);
-
-                                for (int j = 0; j < 9; j++)
-                                {
-                                    instruction.set_random_seed(randArray[j]);
-                                    ikcp_send(players.back(), instruction.SerializeAsString().data(),
-                                              instruction.ByteSizeLong());
-                                }
-                                instruction.set_ready_to_start(0);
-                                ikcp_send(players.back(), instruction.SerializeAsString().data(),
-                                          instruction.ByteSizeLong());
-                        }*/
                         if (players.size() == gameSize)
                         {
                             quint32 randArray[10];
@@ -102,10 +87,11 @@ void Game::netSlap()
                                 ikcp_send(players[i], instruction.SerializeAsString().data(),
                                           instruction.ByteSizeLong());
                             }
-                            break;
                         }
+                        break; 
                     case proto::Instruction::kGameOver:
                     {
+                        QLOG_DEBUG()<<"gameOverPlayers="<<gameOverPlayers+1<<"gameSize="<<gameSize;
                         if (++gameOverPlayers == gameSize)
                             gameOverFlag = true;
                         break;

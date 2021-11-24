@@ -29,7 +29,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")#windows with mingw
         message(STATUS "using GCC")
         #设置3方库文件的路径，如已安装或者已设环境变量可以注释下两行
-        set(Protobuf_ROOT D:/protobuf-3.15.6/mingw_build;D:/protobuf-3.15.6)
+        set(Protobuf_ROOT D:/protobuf-3.15.6;D:/protobuf-3.15.6/mingw_build)
         set(Qt5_ROOT D:/Qt/5.15.2/mingw81_64)
         #如果乱码请调整下两行
         add_compile_options(-finput-charset=utf-8)#设置源码字符集
@@ -38,7 +38,7 @@ elseif (CMAKE_SYSTEM_NAME MATCHES "Windows")
         message(STATUS "using Visual Studio C++")
         add_definitions(-DPROTOBUF_USE_DLLS)
         #设置3方库文件的路径，如已安装或者已设环境变量可以注释下两行
-        set(Protobuf_ROOT D:/protobuf-3.15.6/msvc_build/Release;D:/protobuf-3.15.6)
+        set(Protobuf_ROOT D:/protobuf-3.15.6;D:/protobuf-3.15.6/msvc_build)
         set(Qt5_ROOT D:/Qt/5.15.2/msvc2019_64)
         #如果乱码请调整下两行
         add_compile_options(-source-charset:utf-8)#设置源码字符集

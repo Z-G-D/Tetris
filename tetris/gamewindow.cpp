@@ -162,15 +162,6 @@ void GameWindow::paintEvent(QPaintEvent *event)
 
             if (players[n].isGamOver())
             {
-                static bool f = true;
-                if (f)
-                {
-                    proto::Instruction instruction;
-                    instruction.set_game_over(0);
-                    ikcp_send(game.getKcpClient(), instruction.SerializeAsString().data(), instruction.ByteSizeLong());
-                    points = game.getCurrentPlayer().getDamageCounter();
-                }
-                f = false;
                 QColor color(0, 0, 0, 100);
                 brush.setColor(color);
                 painter.setBrush(brush);
@@ -299,7 +290,7 @@ void GameWindow::paintEvent(QPaintEvent *event)
         }
     }
 
-    int alive = game.getPlayerAliveCount();
+    auto alive = game.getPlayerAliveCount();
     if (gameType == GameType::gameSingle)
     {
         if (alive == 0)
@@ -326,18 +317,14 @@ void GameWindow::paintEvent(QPaintEvent *event)
             painter.drawRect(0, 0, this->width(), this->height());
             font.setPointSize(100);
             painter.setFont(font);
-            bool win = false;
-            for (int i = 0; i < players.size(); i++)
+            if (game.getCurrentPlayer().isGamOver())
             {
-                if (!players[i].isGamOver() && i == game.getPlayerNumber())
-                {
-                    win = true;
-                }
+                painter.drawText(gameScreen.width() / 4, gameScreen.height() / 2, tr("you lost"));
             }
-            if (win)
-                painter.drawText(gameScreen.width() / 4, gameScreen.height() / 2, tr("you win"));
             else
-                painter.drawText(gameScreen.width() / 4, gameScreen.height() / 2, tr("game over"));
+            {
+                painter.drawText(gameScreen.width() / 4, gameScreen.height() / 2, tr("you win"));
+            }
         }
     }
 }
