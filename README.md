@@ -6,6 +6,7 @@
 windows端游戏菜单
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/417d1825228a4227b6e1c9c3309497d1.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALVotRy1ELQ==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 linux端游戏菜单
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/7c3fbf60f52a47b78966b69226263996.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALVotRy1ELQ==,size_20,color_FFFFFF,t_70,g_se,x_16)
@@ -13,9 +14,11 @@ linux端游戏菜单
 Windows游戏界面（左边为用户，右边为对手）
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/95550e391a3a47808bb9cd764776bd29.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALVotRy1ELQ==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 Windows方失败
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/1e47b19ed1394e9dad00fc80c5aa5f7f.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALVotRy1ELQ==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 Linux方胜利
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/1835ad4480414f56a9072562efe33909.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALVotRy1ELQ==,size_20,color_FFFFFF,t_70,g_se,x_16)
@@ -23,12 +26,15 @@ Linux方胜利
 9人乱斗一方在累计伤害大于等于其他玩家人数的情况下向所有其他玩家发送一格黑块
 
 ![玩家向其他所有人发送一个黑块进行攻击](https://img-blog.csdnimg.cn/38fd2223d4f34a599a7dd0c8c6854145.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALVotRy1ELQ==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 游戏进行到中期玩家逐渐减少
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/1bbb13af1edd4a3d8478261affd1a6a1.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALVotRy1ELQ==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 9人模式中的败者
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/275489ebb5914172a2104737e4203b30.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALVotRy1ELQ==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 9人模式中的胜者
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/73fd4b941b4f4041836c5ad77dc8ba46.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBALVotRy1ELQ==,size_20,color_FFFFFF,t_70,g_se,x_16)
