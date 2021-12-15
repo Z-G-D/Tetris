@@ -197,5 +197,8 @@ show_files: PROJECT_FILE files: 13
 ## 游戏源码和发布程序
 [github链接](https://github.com/Z-G-D/Tetris/releases)
 
+## 详细介绍 
+[csdn链接](https://blog.csdn.net/qq_41433566/article/details/121846416)
+
 ## 声明
 本项目只用于交流学习，其中的游戏音乐图片均来源于个人收藏，如有侵权请联系删除。
